@@ -5,16 +5,34 @@ import './index.css';
 class Square extends React.Component {
   render() {
     return (
-      <button className="square">
-        {/* TODO */}
+      <button className="square" onClick={() => this.props.onClick()}>
+        {this.props.value}
       </button>
     );
   }
 }
 
 class Board extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      squares: Array(9).fill(null),
+    }
+  }
+
+  handleClick(i) {
+    const squares = this.state.squares.slice(); // copy the squares array instead of mutating the existing array
+    squares[i] = 'X';
+    this.setState({squares: squares}); // setState is asynchronous O_o https://stackoverflow.com/questions/41896878/react-setstate-getstate-and-asynchronous
+  }
+
   renderSquare(i) {
-    return <Square />;
+    return (
+      <Square 
+        value={this.state.squares[i]} 
+        onClick={() => this.handleClick(i) }
+      />
+    );
   }
 
   render() {
