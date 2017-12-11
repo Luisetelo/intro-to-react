@@ -15,13 +15,17 @@ class Board extends React.Component {
     super();
     this.state = {
       squares: Array(9).fill(null),
+      xIsNext: true,
     }
   }
 
   handleClick(i) {
     const squares = this.state.squares.slice(); // copy the squares array instead of mutating the existing array
-    squares[i] = 'X';
-    this.setState({squares: squares}); // setState is asynchronous O_o https://stackoverflow.com/questions/41896878/react-setstate-getstate-and-asynchronous
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState({
+      squares: squares,
+      xIsNext: !this.state.xIsNext,
+    }); // setState is asynchronous O_o https://stackoverflow.com/questions/41896878/react-setstate-getstate-and-asynchronous
   }
 
   renderSquare(i) {
@@ -34,7 +38,7 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: X';
+    const status = 'Next player '+ (this.state.xIsNext ? 'X' : 'O');
 
     return (
       <div>
@@ -61,6 +65,7 @@ class Board extends React.Component {
 
 class Game extends React.Component {
   render() {
+
     return (
       <div className="game">
         <div className="game-board">
